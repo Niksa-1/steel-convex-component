@@ -56,6 +56,19 @@ export const schema = defineSchema({
   })
     .index("bySessionExternalId", ["sessionExternalId"])
     .index("bySessionExternalIdAndPath", ["sessionExternalId", "path"]),
+  globalFiles: defineTable({
+    externalId: vString,
+    ownerId: v.string(),
+    name: vOptionalString,
+    path: vOptionalString,
+    size: vOptionalNumber,
+    lastModified: vOptionalNumber,
+    sourceUrl: vOptionalString,
+    mimeType: vOptionalString,
+    lastSyncedAt: vNumber,
+  })
+    .index("byExternalId", ["externalId"])
+    .index("byOwnerId", ["ownerId"]),
   captchaStates: defineTable({
     sessionExternalId: vString,
     pageId: vString,

@@ -772,15 +772,25 @@
       "tags": [
         "release"
       ],
-      "updated_at": "2026-03-02T09:46:16Z",
+      "updated_at": "2026-03-02T09:46:21Z",
       "details": "Added release automation scripts, release verification guardrail, and a dedicated release/Convex submission checklist; kept build/typecheck ordering aligned with component codegen requirements.",
       "files": [
+        "README.md",
+        "RELEASE.md",
         "package.json",
         "scripts/release-verify.js",
-        "RELEASE.md",
-        "README.md",
         "to-do.json"
       ]
+    },
+    {
+      "id": "PROJECT-DONE",
+      "title": "Project done: no new tasks",
+      "priority": 5,
+      "status": "done",
+      "tags": [
+        "project-done"
+      ],
+      "details": "Final review of the listed source file found no additional changes required beyond the completed implementation and existing backlog coverage."
     }
   ]
 }
