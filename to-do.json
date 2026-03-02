@@ -719,12 +719,14 @@
         "tests",
         "ci"
       ],
-      "updated_at": "2026-03-02T09:45:12Z",
+      "updated_at": "2026-03-02T09:45:18Z",
       "files": [
-        "test/sessions.unit.test.ts",
-        "test/sessions.integration.test.ts",
+        "package.json",
+        "src/component/_generated/server.ts",
         "test/sessionTestUtils.ts",
-        "src/component/_generated/server.ts"
+        "test/sessions.integration.test.ts",
+        "test/sessions.unit.test.ts",
+        "to-do.json"
       ],
       "blockers": [],
       "details": "Added component unit + integration test suite with convex-test harness for sync/upsert/list/release-idempotent unit coverage and tenant flow smoke tests; added optional live-mode tests gated by STEEL_API_KEY."
@@ -733,7 +735,7 @@
       "id": "T029",
       "title": "Generate comprehensive README and API reference",
       "priority": 5,
-      "status": "todo",
+      "status": "done",
       "depends_on": [
         "T028",
         "T025"
@@ -745,6 +747,12 @@
       ],
       "tags": [
         "documentation"
+      ],
+      "updated_at": "2026-03-02T09:45:44Z",
+      "details": "Generated comprehensive README and API reference with setup, tenant/API-key model, and method matrix across sessions, files, captchas, and adjacent modules. Added API.md as the authoritative API reference and documented boundaries, pagination, and persistence behavior.",
+      "files": [
+        "README.md",
+        "API.md"
       ]
     },
     {
