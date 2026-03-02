@@ -1,0 +1,563 @@
+{
+  "schema_version": 1,
+  "project": {
+    "name": "steel-convex-component",
+    "root": "."
+  },
+  "source_files": [
+    "specification.md"
+  ],
+  "tasks": [
+    {
+      "id": "T001",
+      "title": "Finalize v0.1 scope and tenant model decisions",
+      "priority": 1,
+      "status": "done",
+      "steps": [
+        "Choose whether v0.1 ships sessions only or sessions plus captchas and files",
+        "Decide ownerId enforcement policy for v0.1",
+        "Record decisions in implementation notes and backlog dependencies"
+      ],
+      "tags": [
+        "planning",
+        "scope"
+      ],
+      "updated_at": "2026-03-02T09:22:29Z",
+      "details": "V0.1 scope finalized to sessions-only (create/refresh/release/get/list/queries + upsert sync paths). Captchas, files, profiles, credentials, extensions, and top-level utilities are deferred to v1+. Tenant policy finalized: ownerId is required for all public session actions and queries in v0.1; app wrapper provides it, component persists it, and every operation is filtered/validated by ownerId for tenant isolation. Missing ownerId is an authorization failure.",
+      "files": [
+        "specification.md"
+      ]
+    },
+    {
+      "id": "T002",
+      "title": "Initialize component skeleton and module folder structure",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T001"
+      ],
+      "steps": [
+        "Create src/client, src/component, and example/convex directories",
+        "Add package-level and component entry placeholder files",
+        "Prepare module files for sessions, captchas, profiles, credentials, extensions, files, and top-level actions"
+      ],
+      "tags": [
+        "scaffold"
+      ]
+    },
+    {
+      "id": "T003",
+      "title": "Add TypeScript and Convex build configuration",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T002"
+      ],
+      "steps": [
+        "Create tsconfig and base lint/typecheck settings",
+        "Set up component-specific convex.config.ts entry settings",
+        "Verify generated artifacts paths for component build flow"
+      ],
+      "tags": [
+        "build",
+        "config"
+      ]
+    },
+    {
+      "id": "T004",
+      "title": "Create package manifest with required dependencies and exports",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T002"
+      ],
+      "steps": [
+        "Set package name, versioning, scripts, and module type",
+        "Add peer dependency on convex and dependency on steel-sdk",
+        "Add exports: ., ./convex.config.js, ./convex.config, ./_generated/component.js, ./_generated/component, ./test"
+      ],
+      "tags": [
+        "packaging"
+      ]
+    },
+    {
+      "id": "T005",
+      "title": "Define Convex schema for sessions with required indexes",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T003"
+      ],
+      "steps": [
+        "Create sessions table with externalId, status, timestamps, and metadata",
+        "Add byExternalId, byStatus, byCreatedAt indexes",
+        "Plan optional ownerId partitioning and index alignment"
+      ],
+      "tags": [
+        "schema",
+        "core"
+      ]
+    },
+    {
+      "id": "T006",
+      "title": "Create shared validators and core status/type unions",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T005"
+      ],
+      "steps": [
+        "Define session status enum and common scalar validators",
+        "Add optional ownerId and includeRaw validators",
+        "Add reusable argument normalization helpers"
+      ],
+      "tags": [
+        "validation",
+        "types"
+      ]
+    },
+    {
+      "id": "T007",
+      "title": "Implement steel client factory with boundary-safe API key injection",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T004",
+        "T006"
+      ],
+      "steps": [
+        "Create helper that constructs steel-sdk client from action arg apiKey",
+        "Reject calls without key unless provided via wrapper context",
+        "Avoid env access inside component runtime"
+      ],
+      "tags": [
+        "runtime",
+        "client"
+      ]
+    },
+    {
+      "id": "T008",
+      "title": "Add structured error normalization utility",
+      "priority": 2,
+      "status": "todo",
+      "depends_on": [
+        "T007"
+      ],
+      "steps": [
+        "Normalize all raised errors to provider/message/retryable contract",
+        "Preserve status and code fields for observability",
+        "Return consistent operation names for traces"
+      ],
+      "tags": [
+        "errors",
+        "resilience"
+      ]
+    },
+    {
+      "id": "T009",
+      "title": "Implement sessions.create action with write-through upsert",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T007",
+        "T005",
+        "T006"
+      ],
+      "steps": [
+        "Call Steel sessions.create with validated args",
+        "Normalize payload into local fields",
+        "Upsert into sessions table using externalId"
+      ],
+      "tags": [
+        "sessions",
+        "mvp"
+      ]
+    },
+    {
+      "id": "T010",
+      "title": "Implement sessions.get and sessions.getByExternalId queries",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T005",
+        "T009"
+      ],
+      "steps": [
+        "Fetch by id and by externalId",
+        "Optionally enforce ownerId filtering",
+        "Return normalized API shape"
+      ],
+      "tags": [
+        "sessions",
+        "query"
+      ]
+    },
+    {
+      "id": "T011",
+      "title": "Implement sessions.list query with status and pagination arguments",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T005",
+        "T010"
+      ],
+      "steps": [
+        "Support status, ownerId, cursor, and limit arguments",
+        "Default list limit conservatively",
+        "Return stable ordering and optional continuation token"
+      ],
+      "tags": [
+        "sessions",
+        "query"
+      ]
+    },
+    {
+      "id": "T012",
+      "title": "Implement sessions.refresh action and per-session reconciliation",
+      "priority": 1,
+      "status": "todo",
+      "depends_on": [
+        "T007",
+        "T011"
+      ],
+      "steps": [
+        "Fetch current remote state for one session",
+        "Normalize and upsert into sessions table",
+        "Return refreshed session snapshot"
+      ],
+      "tags": [
+        "sessions",
+        "sync"
+      ]
+    },
+    {
+      "id": "T013",
+      "title": "Implement sessions.refreshMany for bulk reconciliation",
+      "priority": 2,
+      "status": "todo",
+      "depends_on": [
+        "T012"
+      ],
+      "steps": [
+        "Accept filters and pagination/cursor for bulk refresh",
+        "Perform partial success handling with per-item results",
+        "Continue processing after item failures while collecting failures"
+      ],
+      "tags": [
+        "sessions",
+        "sync",
+        "bulk"
+      ]
+    },
+    {
+      "id": "T014",
+      "title": "Implement sessions.release and sessions.releaseAll",
+      "priority": 2,
+      "status": "todo",
+      "depends_on": [
+        "T012"
+      ],
+      "steps": [
+        "Add idempotent release behavior for already-released sessions",
+        "Update local status and lastSyncedAt after remote release",
+        "Allow optional bulk release by ownerId or status"
+      ],
+      "tags": [
+        "sessions",
+        "lifecycle"
+      ]
+    },
+    {
+      "id": "T015",
+      "title": "Implement internal sessions.upsert and getInternalByExternalId",
+      "priority": 2,
+      "status": "todo",
+      "depends_on": [
+        "T012"
+      ],
+      "steps": [
+        "Add internal helpers for idempotent writes",
+        "Normalize raw payload only when includeRaw is enabled",
+        "Share ownerId and timestamp behavior across actions"
+      ],
+      "tags": [
+        "internal",
+        "sessions"
+      ]
+    },
+    {
+      "id": "T016",
+      "title": "Implement sessions.computer and sessions.context actions",
+      "priority": 2,
+      "status": "todo",
+      "depends_on": [
+        "T007",
+        "T015"
+      ],
+      "steps": [
+        "Add validators for remote command actions",
+        "Return Steel payload directly",
+        "Avoid default persistence of heavy payloads"
+      ],
+      "tags": [
+        "sessions",
+        "v1"
+      ]
+    },
+    {
+      "id": "T017",
+      "title": "Implement sessions.liveDetails and sessions.events actions",
+      "priority": 2,
+      "status": "todo",
+      "depends_on": [
+        "T007",
+        "T015"
+      ],
+      "steps": [
+        "Add live-details and events action handlers",
+        "Return raw payload by default",
+        "Persist lightweight snapshot metadata when requested"
+      ],
+      "tags": [
+        "sessions",
+        "v1"
+      ]
+    },
+    {
+      "id": "T018",
+      "title": "Create sessionFileMetadata table and session file actions",
+      "priority": 3,
+      "status": "todo",
+      "depends_on": [
+        "T005"
+      ],
+      "steps": [
+        "Define sessionFileMetadata table with indexes by sessionExternalId and path",
+        "Implement list/uploadFromUrl/delete/deleteAll actions",
+        "Keep binary payload persistence out of default flow"
+      ],
+      "tags": [
+        "session-files",
+        "v1"
+      ]
+    },
+    {
+      "id": "T019",
+      "title": "Add captchaStates table and captcha actions",
+      "priority": 3,
+      "status": "todo",
+      "depends_on": [
+        "T007"
+      ],
+      "steps": [
+        "Implement status, solve, and solveImage",
+        "Add captchaStates table with bySessionExternalId and bySessionExternalIdAndPageId",
+        "Persist optional status snapshots"
+      ],
+      "tags": [
+        "captchas",
+        "v1"
+      ]
+    },
+    {
+      "id": "T020",
+      "title": "Create profiles module with metadata handling",
+      "priority": 3,
+      "status": "todo",
+      "depends_on": [
+        "T007"
+      ],
+      "steps": [
+        "Implement list/get/createFromUrl/updateFromUrl actions",
+        "Add profiles metadata table for local reactivity",
+        "Use URL-based input strategy for userDataDir"
+      ],
+      "tags": [
+        "profiles",
+        "v1.1"
+      ]
+    },
+    {
+      "id": "T021",
+      "title": "Implement credentials module with secret-safe persistence",
+      "priority": 4,
+      "status": "todo",
+      "depends_on": [
+        "T007"
+      ],
+      "steps": [
+        "Implement create/update/list/delete actions",
+        "Persist only metadata and never raw credential secrets",
+        "Add tenant-aware validation where applicable"
+      ],
+      "tags": [
+        "credentials",
+        "v1.1"
+      ]
+    },
+    {
+      "id": "T022",
+      "title": "Implement extensions module with metadata tables",
+      "priority": 4,
+      "status": "todo",
+      "depends_on": [
+        "T007"
+      ],
+      "steps": [
+        "Implement list/uploadFromUrl/updateFromUrl/delete/deleteAll",
+        "Persist extension metadata without binary payloads",
+        "Validate URLs and ownership ownership fields"
+      ],
+      "tags": [
+        "extensions",
+        "v1.1"
+      ]
+    },
+    {
+      "id": "T023",
+      "title": "Implement global files module and optional storage download flow",
+      "priority": 4,
+      "status": "todo",
+      "depends_on": [
+        "T007"
+      ],
+      "steps": [
+        "Implement list/uploadFromUrl/delete actions",
+        "Add optional downloadToStorage action path",
+        "Persist file metadata only in default configuration"
+      ],
+      "tags": [
+        "files",
+        "v1.1"
+      ]
+    },
+    {
+      "id": "T024",
+      "title": "Add top-level steel.screenshot, steel.scrape, and steel.pdf actions",
+      "priority": 4,
+      "status": "todo",
+      "depends_on": [
+        "T007"
+      ],
+      "steps": [
+        "Expose direct passthrough actions",
+        "Return remote response directly",
+        "Add explicit timeout/input validators"
+      ],
+      "tags": [
+        "utility",
+        "v1.1"
+      ]
+    },
+    {
+      "id": "T025",
+      "title": "Build app-facing SteelComponent wrapper with runAction/runQuery/runMutation",
+      "priority": 2,
+      "status": "todo",
+      "depends_on": [
+        "T009",
+        "T010",
+        "T011",
+        "T013",
+        "T014"
+      ],
+      "steps": [
+        "Resolve api key from options then app env at wrapper layer",
+        "Expose typed methods mirroring public component functions",
+        "Normalize options and ownerId into action args"
+      ],
+      "tags": [
+        "client"
+      ]
+    },
+    {
+      "id": "T026",
+      "title": "Wire example Convex app and usage samples",
+      "priority": 3,
+      "status": "todo",
+      "depends_on": [
+        "T025",
+        "T004"
+      ],
+      "steps": [
+        "Create example schema and component invocation wiring",
+        "Add steelExample usage for session lifecycle",
+        "Demonstrate ownerId propagation and wrapper usage"
+      ],
+      "tags": [
+        "example",
+        "docs"
+      ]
+    },
+    {
+      "id": "T027",
+      "title": "Add register helper and test scaffolding for component actions",
+      "priority": 3,
+      "status": "todo",
+      "depends_on": [
+        "T024"
+      ],
+      "steps": [
+        "Create src/test.ts with helper to register component in tests",
+        "Add fixtures for sessions and validation behavior",
+        "Mock Steel SDK for deterministic unit tests"
+      ],
+      "tags": [
+        "tests"
+      ]
+    },
+    {
+      "id": "T028",
+      "title": "Add component and integration test suite",
+      "priority": 4,
+      "status": "todo",
+      "depends_on": [
+        "T027"
+      ],
+      "steps": [
+        "Add unit tests for sync, upsert, list, release idempotency",
+        "Add integration smoke tests for core session and tenancy flows",
+        "Add optional live test mode guarded by STEEL_API_KEY"
+      ],
+      "tags": [
+        "tests",
+        "ci"
+      ]
+    },
+    {
+      "id": "T029",
+      "title": "Generate comprehensive README and API reference",
+      "priority": 5,
+      "status": "todo",
+      "depends_on": [
+        "T028",
+        "T025"
+      ],
+      "steps": [
+        "Document project setup, wrapper usage, and installation steps",
+        "Publish action/query matrix across sessions, files, and captchas",
+        "Document security and tenant scoping requirements"
+      ],
+      "tags": [
+        "documentation"
+      ]
+    },
+    {
+      "id": "T030",
+      "title": "Prepare release pipeline and hardening checklist",
+      "priority": 5,
+      "status": "todo",
+      "depends_on": [
+        "T029"
+      ],
+      "steps": [
+        "Add scripts for build, typecheck, and publish flow",
+        "Verify required component exports and codegen ordering",
+        "Create release checklist for npm and Convex component submission"
+      ],
+      "tags": [
+        "release"
+      ]
+    }
+  ]
+}
