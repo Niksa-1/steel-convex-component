@@ -706,7 +706,7 @@
       "id": "T028",
       "title": "Add component and integration test suite",
       "priority": 4,
-      "status": "todo",
+      "status": "done",
       "depends_on": [
         "T027"
       ],
@@ -718,7 +718,16 @@
       "tags": [
         "tests",
         "ci"
-      ]
+      ],
+      "updated_at": "2026-03-02T09:45:12Z",
+      "files": [
+        "test/sessions.unit.test.ts",
+        "test/sessions.integration.test.ts",
+        "test/sessionTestUtils.ts",
+        "src/component/_generated/server.ts"
+      ],
+      "blockers": [],
+      "details": "Added component unit + integration test suite with convex-test harness for sync/upsert/list/release-idempotent unit coverage and tenant flow smoke tests; added optional live-mode tests gated by STEEL_API_KEY."
     },
     {
       "id": "T029",

@@ -8,7 +8,10 @@
   "scripts": {
     "build": "convex codegen --component-dir ./src/component && tsc -p tsconfig.json",
     "codegen": "convex codegen --component-dir ./src/component",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run test/sessions.unit.test.ts",
+    "test:integration": "vitest run test/sessions.integration.test.ts"
   },
   "exports": {
     ".": {
@@ -41,5 +44,9 @@
   },
   "dependencies": {
     "steel-sdk": "^0.17.0"
+  },
+  "devDependencies": {
+    "convex-test": "^0.0.41",
+    "vitest": "^3.0.0"
   }
 }
