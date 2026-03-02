@@ -66,6 +66,19 @@ export const schema = defineSchema({
   })
     .index("bySessionExternalId", ["sessionExternalId"])
     .index("bySessionExternalIdAndPageId", ["sessionExternalId", "pageId"]),
+  extensions: defineTable({
+    externalId: vString,
+    name: vOptionalString,
+    version: vOptionalString,
+    description: vOptionalString,
+    sourceUrl: vOptionalString,
+    checksum: vOptionalString,
+    enabled: vOptionalBoolean,
+    ownerId: v.string(),
+    lastSyncedAt: vNumber,
+  })
+    .index("byExternalId", ["externalId"])
+    .index("byOwnerId", ["ownerId"]),
   profiles: defineTable({
     externalId: vString,
     name: vOptionalString,

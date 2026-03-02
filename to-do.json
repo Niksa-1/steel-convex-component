@@ -539,11 +539,12 @@
         "credentials",
         "v1.1"
       ],
-      "updated_at": "2026-03-02T09:39:49Z",
+      "updated_at": "2026-03-02T09:40:09Z",
       "files": [
+        "src/client/index.ts",
         "src/component/credentials.ts",
         "src/component/schema.ts",
-        "src/client/index.ts"
+        "to-do.json"
       ],
       "details": "Implemented credentials module with secret-safe metadata persistence and tenant-aware validation for create/update/list/delete actions; added credentials table schema for encrypted metadata-free local caching; exposed wrapper client methods for component credentials operations."
     },
@@ -551,7 +552,7 @@
       "id": "T022",
       "title": "Implement extensions module with metadata tables",
       "priority": 4,
-      "status": "todo",
+      "status": "done",
       "depends_on": [
         "T007"
       ],
@@ -563,6 +564,13 @@
       "tags": [
         "extensions",
         "v1.1"
+      ],
+      "updated_at": "2026-03-02T09:40:39Z",
+      "details": "Implemented extensions module with list/uploadFromUrl/updateFromUrl/delete/deleteAll actions plus metadata persistence via a new extensions table, with ownerId and URL validation in action arguments and wrapper surface in client.",
+      "files": [
+        "src/component/extensions.ts",
+        "src/component/schema.ts",
+        "src/client/index.ts"
       ]
     },
     {

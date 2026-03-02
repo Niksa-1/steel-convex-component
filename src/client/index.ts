@@ -46,6 +46,13 @@ interface SteelComponentFunctions {
     list: unknown;
     delete: unknown;
   };
+  extensions: {
+    list: unknown;
+    uploadFromUrl: unknown;
+    updateFromUrl: unknown;
+    delete: unknown;
+    deleteAll: unknown;
+  };
   sessionFiles: {
     list: unknown;
     uploadFromUrl: unknown;
@@ -308,6 +315,52 @@ export interface SteelComponentCredentialListArgs {
 
 export interface SteelComponentCredentialDeleteArgs {
   externalId: string;
+  ownerId: string;
+}
+
+export interface SteelExtensionMetadata {
+  externalId: string;
+  ownerId: string;
+  lastSyncedAt: number;
+  name?: string;
+  version?: string;
+  description?: string;
+  sourceUrl?: string;
+  checksum?: string;
+  enabled?: boolean;
+}
+
+export interface SteelExtensionListResult {
+  items: SteelExtensionMetadata[];
+  hasMore: boolean;
+  continuation?: string;
+}
+
+export interface SteelComponentExtensionListArgs {
+  ownerId: string;
+  cursor?: string;
+  limit?: number;
+}
+
+export interface SteelComponentExtensionUploadFromUrlArgs {
+  ownerId: string;
+  url: string;
+  extensionArgs?: Record<string, unknown>;
+}
+
+export interface SteelComponentExtensionUpdateFromUrlArgs {
+  ownerId: string;
+  externalId: string;
+  url?: string;
+  extensionArgs?: Record<string, unknown>;
+}
+
+export interface SteelComponentExtensionDeleteArgs {
+  ownerId: string;
+  externalId: string;
+}
+
+export interface SteelComponentExtensionDeleteAllArgs {
   ownerId: string;
 }
 
@@ -715,6 +768,64 @@ export class SteelComponent {
       this.runAction<SteelComponentCredentialDeleteArgs, unknown>(
         ctx,
         this.component.credentials.delete,
+        args,
+        options,
+      ),
+  };
+
+  public readonly extensions = {
+    list: (
+      ctx: SteelComponentContext,
+      args: SteelComponentExtensionListArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentExtensionListArgs, SteelExtensionListResult>(
+        ctx,
+        this.component.extensions.list,
+        args,
+        options,
+      ),
+    uploadFromUrl: (
+      ctx: SteelComponentContext,
+      args: SteelComponentExtensionUploadFromUrlArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentExtensionUploadFromUrlArgs, SteelExtensionMetadata>(
+        ctx,
+        this.component.extensions.uploadFromUrl,
+        args,
+        options,
+      ),
+    updateFromUrl: (
+      ctx: SteelComponentContext,
+      args: SteelComponentExtensionUpdateFromUrlArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentExtensionUpdateFromUrlArgs, SteelExtensionMetadata>(
+        ctx,
+        this.component.extensions.updateFromUrl,
+        args,
+        options,
+      ),
+    delete: (
+      ctx: SteelComponentContext,
+      args: SteelComponentExtensionDeleteArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentExtensionDeleteArgs, unknown>(
+        ctx,
+        this.component.extensions.delete,
+        args,
+        options,
+      ),
+    deleteAll: (
+      ctx: SteelComponentContext,
+      args: SteelComponentExtensionDeleteAllArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentExtensionDeleteAllArgs, unknown>(
+        ctx,
+        this.component.extensions.deleteAll,
         args,
         options,
       ),
