@@ -77,4 +77,19 @@ export const schema = defineSchema({
   })
     .index("byExternalId", ["externalId"])
     .index("byOwnerId", ["ownerId"]),
+  credentials: defineTable({
+    externalId: vString,
+    name: vOptionalString,
+    service: vOptionalString,
+    type: vOptionalString,
+    username: vOptionalString,
+    description: vOptionalString,
+    metadata: v.optional(v.record(v.string(), v.any())),
+    createdAt: vOptionalNumber,
+    updatedAt: vOptionalNumber,
+    ownerId: v.string(),
+    lastSyncedAt: vNumber,
+  })
+    .index("byExternalId", ["externalId"])
+    .index("byOwnerId", ["ownerId"]),
 });

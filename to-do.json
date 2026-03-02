@@ -526,7 +526,7 @@
       "id": "T021",
       "title": "Implement credentials module with secret-safe persistence",
       "priority": 4,
-      "status": "todo",
+      "status": "done",
       "depends_on": [
         "T007"
       ],
@@ -538,7 +538,14 @@
       "tags": [
         "credentials",
         "v1.1"
-      ]
+      ],
+      "updated_at": "2026-03-02T09:39:49Z",
+      "files": [
+        "src/component/credentials.ts",
+        "src/component/schema.ts",
+        "src/client/index.ts"
+      ],
+      "details": "Implemented credentials module with secret-safe metadata persistence and tenant-aware validation for create/update/list/delete actions; added credentials table schema for encrypted metadata-free local caching; exposed wrapper client methods for component credentials operations."
     },
     {
       "id": "T022",

@@ -40,6 +40,12 @@ interface SteelComponentFunctions {
     createFromUrl: unknown;
     updateFromUrl: unknown;
   };
+  credentials: {
+    create: unknown;
+    update: unknown;
+    list: unknown;
+    delete: unknown;
+  };
   sessionFiles: {
     list: unknown;
     uploadFromUrl: unknown;
@@ -129,6 +135,26 @@ export interface SteelProfileMetadata {
 
 export interface SteelProfileListResult {
   items: SteelProfileMetadata[];
+  hasMore: boolean;
+  continuation?: string;
+}
+
+export interface SteelCredentialMetadata {
+  externalId: string;
+  name?: string;
+  service?: string;
+  type?: string;
+  username?: string;
+  description?: string;
+  metadata?: Record<string, unknown>;
+  createdAt?: number;
+  updatedAt?: number;
+  ownerId: string;
+  lastSyncedAt: number;
+}
+
+export interface SteelCredentialListResult {
+  items: SteelCredentialMetadata[];
   hasMore: boolean;
   continuation?: string;
 }
@@ -261,6 +287,28 @@ export interface SteelComponentProfileUpdateFromUrlArgs {
   ownerId: string;
   userDataDirUrl?: string;
   profileArgs?: Record<string, unknown>;
+}
+
+export interface SteelComponentCredentialCreateArgs {
+  ownerId: string;
+  credentialArgs?: Record<string, unknown>;
+}
+
+export interface SteelComponentCredentialUpdateArgs {
+  externalId: string;
+  ownerId: string;
+  credentialArgs?: Record<string, unknown>;
+}
+
+export interface SteelComponentCredentialListArgs {
+  ownerId: string;
+  cursor?: string;
+  limit?: number;
+}
+
+export interface SteelComponentCredentialDeleteArgs {
+  externalId: string;
+  ownerId: string;
 }
 
 export class SteelComponent {
@@ -620,6 +668,53 @@ export class SteelComponent {
       this.runAction<SteelComponentProfileUpdateFromUrlArgs, SteelProfileMetadata>(
         ctx,
         this.component.profiles.updateFromUrl,
+        args,
+        options,
+      ),
+  };
+
+  public readonly credentials = {
+    create: (
+      ctx: SteelComponentContext,
+      args: SteelComponentCredentialCreateArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentCredentialCreateArgs, SteelCredentialMetadata>(
+        ctx,
+        this.component.credentials.create,
+        args,
+        options,
+      ),
+    update: (
+      ctx: SteelComponentContext,
+      args: SteelComponentCredentialUpdateArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentCredentialUpdateArgs, SteelCredentialMetadata>(
+        ctx,
+        this.component.credentials.update,
+        args,
+        options,
+      ),
+    list: (
+      ctx: SteelComponentContext,
+      args: SteelComponentCredentialListArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentCredentialListArgs, SteelCredentialListResult>(
+        ctx,
+        this.component.credentials.list,
+        args,
+        options,
+      ),
+    delete: (
+      ctx: SteelComponentContext,
+      args: SteelComponentCredentialDeleteArgs,
+      options?: SteelComponentOptions,
+    ) =>
+      this.runAction<SteelComponentCredentialDeleteArgs, unknown>(
+        ctx,
+        this.component.credentials.delete,
         args,
         options,
       ),
