@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import { __setTestSteelClientFactory } from "./component/steel";
 import componentSchema from "./component/schema";
 import * as convexConfig from "./component/convex.config";
@@ -9,6 +10,9 @@ import * as credentials from "./component/credentials";
 import * as extensions from "./component/extensions";
 import * as files from "./component/files";
 import * as topLevel from "./component/topLevel";
+import * as generatedApi from "./component/_generated/api";
+import * as generatedServer from "./component/_generated/server";
+import * as generatedDataModel from "./component/_generated/dataModel";
 
 type SessionStatus = "live" | "released" | "failed";
 
@@ -636,18 +640,7 @@ export const resetMockSteelClient = (): void => {
   __setTestSteelClientFactory(undefined);
 };
 
-export const componentModules = {
-  "./convex.config.ts": convexConfig,
-  "./schema.ts": { schema: componentSchema },
-  "./sessions.ts": sessions,
-  "./sessionFiles.ts": sessionFiles,
-  "./captchas.ts": captchas,
-  "./profiles.ts": profiles,
-  "./credentials.ts": credentials,
-  "./extensions.ts": extensions,
-  "./files.ts": files,
-  "./topLevel.ts": topLevel,
-};
+export const componentModules = import.meta.glob("./component/**/*.ts", { eager: false });
 
 export const register = (
   harness: RegisterHarness,
