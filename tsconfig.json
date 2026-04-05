@@ -3,7 +3,6 @@
     "allowJs": true,
     "checkJs": true,
     "strict": true,
-    "types": ["vite/client"],
     "target": "ESNext",
     "lib": ["ES2021", "dom", "DOM.Iterable"],
     "jsx": "react-jsx",
